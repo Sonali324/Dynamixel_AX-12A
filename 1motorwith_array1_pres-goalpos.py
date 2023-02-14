@@ -24,12 +24,16 @@ from dynamixel_sdk import *                    # Uses Dynamixel SDK library
 ADDR_MX_TORQUE_ENABLE      = 24               # Control table address is different in Dynamixel model
 ADDR_MX_GOAL_POSITION      = 30
 ADDR_MX_PRESENT_POSITION   = 36
+ADDR_AX_GOAL_SPEED_L = 32
 
 # Protocol version
 PROTOCOL_VERSION            = 1.0               # See which protocol version is used in the Dynamixel
 
 # Default setting
-DXL_ID                      = 1                 # Dynamixel ID : 1
+DXL_ID1                      = 1                 # Dynamixel ID : 1
+DXL_ID2                      = 2                 # Dynamixel ID : 2
+DXL_ID3                      = 3                 # Dynamixel ID : 3
+DXL_ID4                      = 4                 # Dynamixel ID : 4
 BAUDRATE                    = 57600             # Dynamixel default baudrate : 57600
 DEVICENAME                  = '/dev/ttyUSB0'    # Check which port is being used on your controller
                                                 # ex) Windows: "COM1"   Linux: "/dev/ttyUSB0" Mac: "/dev/tty.usbserial-*"
@@ -75,11 +79,12 @@ else:
 # for dxl_goal_position in range(dxl_present_position, DXL_MAXIMUM_POSITION_VALUE, 100):
 
 # Enable Dynamixel Torque
-dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL_ID, ADDR_MX_TORQUE_ENABLE, TORQUE_ENABLE)
-if dxl_comm_result != COMM_SUCCESS:
-    print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-elif dxl_error != 0:
-    print("%s" % packetHandler.getRxPacketError(dxl_error))
+dxl1_comm_result, dxl1_error = packetHandler.write1ByteTxRx(portHandler, DXL_ID1, ADDR_MX_TORQUE_ENABLE, TORQUE_ENABLE)
+dxl2_comm_result, dxl2_error = packetHandler.write1ByteTxRx(portHandler, DXL_ID2, ADDR_MX_TORQUE_ENABLE, TORQUE_ENABLE)
+if dxl1_comm_result != COMM_SUCCESS:
+    print("%s" % packetHandler.getTxRxResult(dxl1_comm_result))
+elif dxl1_error != 0:
+    print("%s" % packetHandler.getRxPacketError(dxl1_error))
 else:
     print("Dynamixel has been successfully connected")    
     
@@ -90,7 +95,9 @@ while 1:
         break
     
 #print(dxl_goal_position)
-check1 = [0, 400, 0, 800, 0, 1023, 0]
+
+check1 = [0, 50, 0, 50, 0, 50, 0]
+speed1 = [50, 100, 50, 100, 50, 100, 50]
 #x = len(dxl_goal_position)
 for x in range(7):
     print(x)
@@ -101,31 +108,41 @@ for x in range(7):
     while 1:
         
         # Read present position
-        dxl_present_position, dxl_comm_result, dxl_error = packetHandler.read2ByteTxRx(portHandler, DXL_ID, ADDR_MX_PRESENT_POSITION)
-        if dxl_comm_result != COMM_SUCCESS:
-            print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-        elif dxl_error != 0:
-            print("%s" % packetHandler.getRxPacketError(dxl_error))
+        dxl1_present_position, dxl1_comm_result, dxl1_error = packetHandler.read2ByteTxRx(portHandler, DXL_ID1, ADDR_MX_PRESENT_POSITION)
+        dxl2_present_position, dxl2_comm_result, dxl2_error = packetHandler.read2ByteTxRx(portHandler, DXL_ID2, ADDR_MX_PRESENT_POSITION)
+        dxl3_present_position, dxl1_comm_result, dxl3_error = packetHandler.read2ByteTxRx(portHandler, DXL_ID3, ADDR_MX_PRESENT_POSITION)
+        dxl4_present_position, dxl2_comm_result, dxl4_error = packetHandler.read2ByteTxRx(portHandler, DXL_ID4, ADDR_MX_PRESENT_POSITION)
+        if dxl1_comm_result != COMM_SUCCESS:
+            print("%s" % packetHandler.getTxRxResult(dxl1_comm_result))
+        elif dxl1_error != 0:
+            print("%s" % packetHandler.getRxPacketError(dxl1_error))
 
-        print("[ID:%03d] GoalPos:%03d  PresPos:%03d" % (DXL_ID, check1[x], dxl_present_position))
+        print("[ID:%03d] GoalPos:%03d  PresPos:%03d" % (DXL_ID1, check1[x], dxl1_present_position))
+        print("[ID:%03d] GoalPos:%03d  PresPos:%03d" % (DXL_ID2, check1[x], dxl2_present_position))
+        
+        dxl1_comm_result, dxl1_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID1, ADDR_AX_GOAL_SPEED_L, speed1[x])
+        dxl2_comm_result, dxl2_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID2, ADDR_AX_GOAL_SPEED_L, speed1[x])
   
         # Write goal position
-        dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_MX_GOAL_POSITION, check1[x])
-        if dxl_comm_result != COMM_SUCCESS:
-            print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-        elif dxl_error != 0:
-            print("%s" % packetHandler.getRxPacketError(dxl_error))
+        dxl1_comm_result, dxl1_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID1, ADDR_MX_GOAL_POSITION, check1[x])
+        dxl2_comm_result, dxl2_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID2, ADDR_MX_GOAL_POSITION, check1[x])
+        if dxl1_comm_result != COMM_SUCCESS:
+            print("%s" % packetHandler.getTxRxResult(dxl1_comm_result))
+        elif dxl1_error != 0:
+            print("%s" % packetHandler.getRxPacketError(dxl1_error))
 
-        if not abs(check1[x] - dxl_present_position) > DXL_MOVING_STATUS_THRESHOLD:
+        if not abs(check1[x] - dxl1_present_position) > DXL_MOVING_STATUS_THRESHOLD:
+        #if not abs(check1[x] - dxl2_present_position) > DXL_MOVING_STATUS_THRESHOLD:
             break
 
 
 # Disable Dynamixel Torque
-dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL_ID, ADDR_MX_TORQUE_ENABLE, TORQUE_DISABLE)
-if dxl_comm_result != COMM_SUCCESS:
-    print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-elif dxl_error != 0:
-    print("%s" % packetHandler.getRxPacketError(dxl_error))
+dxl1_comm_result, dxl1_error = packetHandler.write1ByteTxRx(portHandler, DXL_ID1, ADDR_MX_TORQUE_ENABLE, TORQUE_DISABLE)
+dxl2_comm_result, dxl2_error = packetHandler.write1ByteTxRx(portHandler, DXL_ID2, ADDR_MX_TORQUE_ENABLE, TORQUE_DISABLE)
+if dxl1_comm_result != COMM_SUCCESS:
+    print("%s" % packetHandler.getTxRxResult(dxl1_comm_result))
+elif dxl1_error != 0:
+    print("%s" % packetHandler.getRxPacketError(dxl1_error))
 
 #Close port
 portHandler.closePort()

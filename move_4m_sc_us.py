@@ -289,33 +289,6 @@ while 1:
             elif dxl4_error != 0:
                 print("%s" % packetHandler.getRxPacketError(dxl4_error))
                 
-            
-    
-
-# # Disable Dynamixel Torque
-# dxl1_comm_result, dxl1_error = packetHandler.write1ByteTxRx(portHandler, DXL1_ID, ADDR_MX_TORQUE_ENABLE, TORQUE_DISABLE)
-# if dxl1_comm_result != COMM_SUCCESS:
-#     print("%s" % packetHandler.getTxRxResult(dxl1_comm_result))
-# elif dxl1_error != 0:
-#     print("%s" % packetHandler.getRxPacketError(dxl1_error))
-#     
-# dxl2_comm_result, dxl2_error = packetHandler.write1ByteTxRx(portHandler, DXL2_ID, ADDR_MX_TORQUE_ENABLE, TORQUE_DISABLE)
-# if dxl2_comm_result != COMM_SUCCESS:
-#     print("%s" % packetHandler.getTxRxResult(dxl2_comm_result))
-# elif dxl2_error != 0:
-#     print("%s" % packetHandler.getRxPacketError(dxl2_error))
-#     
-# dxl3_comm_result, dxl3_error = packetHandler.write1ByteTxRx(portHandler, DXL3_ID, ADDR_MX_TORQUE_ENABLE, TORQUE_DISABLE)
-# if dxl3_comm_result != COMM_SUCCESS:
-#     print("%s" % packetHandler.getTxRxResult(dxl3_comm_result))
-# elif dxl3_error != 0:
-#     print("%s" % packetHandler.getRxPacketError(dxl3_error))
-#     
-# dxl4_comm_result, dxl4_error = packetHandler.write1ByteTxRx(portHandler, DXL4_ID, ADDR_MX_TORQUE_ENABLE, TORQUE_DISABLE)
-# if dxl4_comm_result != COMM_SUCCESS:
-#     print("%s" % packetHandler.getTxRxResult(dxl4_comm_result))
-# elif dxl4_error != 0:
-#     print("%s" % packetHandler.getRxPacketError(dxl4_error))
     
 # Close port
 portHandler.closePort()

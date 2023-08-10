@@ -57,7 +57,7 @@ else:
 
 # Enable Dynamixel Torque
 for dxl_id in ID_MAT:
-    dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, dxl_id, ADDR_MX_TORQUE_ENABLE, TORQUE_ENABLE)
+    dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, dxl_id, ADDR_AX_TORQUE_ENABLE, TORQUE_ENABLE)
     if dxl_comm_result != COMM_SUCCESS:
         print("Failed to enable torque for ID:%03d" % dxl_id)
     elif dxl_error != 0:
@@ -86,7 +86,7 @@ try:
                     print("Failed to set goal speed for ID:%03d" % dxl_id)
 
                 while True:
-                    dxl_present_position, dxl_comm_result, dxl_error = packetHandler.read2ByteTxRx(portHandler, dxl_id, ADDR_MX_PRESENT_POSITION)
+                    dxl_present_position, dxl_comm_result, dxl_error = packetHandler.read2ByteTxRx(portHandler, dxl_id, ADDR_AX_PRESENT_POSITION)
                     if dxl_comm_result != COMM_SUCCESS:
                         print("Failed to read present position for ID:%03d" % dxl_id)
                     elif dxl_error != 0:
@@ -94,7 +94,7 @@ try:
 
                     print("[ID:%03d] GoalPos:%03d  PresPos:%03d" % (dxl_id, goal_position, dxl_present_position))
 
-                    dxl_comm1_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, dxl_id, ADDR_MX_GOAL_POSITION, goal_position)
+                    dxl_comm1_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, dxl_id, ADDR_AX_GOAL_POSITION, goal_position)
                     if dxl_comm1_result != COMM_SUCCESS:
                         print("Failed to set goal position for ID:%03d" % dxl_id)
 
@@ -103,7 +103,7 @@ try:
 
 finally:
     for dxl_id in ID_MAT:
-        dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, dxl_id, ADDR_MX_TORQUE_ENABLE, TORQUE_DISABLE)
+        dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, dxl_id, ADDR_AX_TORQUE_ENABLE, TORQUE_DISABLE)
         if dxl_comm_result != COMM_SUCCESS:
             print("Failed to disable torque for ID:%03d" % dxl_id)
         elif dxl_error != 0:
